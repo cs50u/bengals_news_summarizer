@@ -29,3 +29,102 @@ The project is designed for **repeatable, robust, and customizable** content cre
 
 ## Example Output
 
+🐅 Bengals News Digest – Florio Style (Ollama Edition)
+The good, bad, and ugly from the Bengals’ official 2025 schedule
+The Bengals' 2025 schedule is out, and it's a mixed bag. On the plus side, they open at Cleveland and host Jacksonville; on the minus, it's another year of primetime disrespect and a brutal three-week gauntlet in November.
+
+...
+
+yaml
+Copy
+Edit
+
+---
+
+## Installation & Setup
+
+### 1. **Clone the Repo**
+
+```bash
+git clone https://github.com/cs50u/bengals_news_summarizer.git
+cd bengals_news_summarizer
+2. Set Up Your Python Environment
+bash
+Copy
+Edit
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+# or
+source .venv/bin/activate   # macOS/Linux
+pip install -r requirements.txt
+3. Install and Set Up Ollama
+Download and install Ollama (Windows/Mac/Linux)
+
+Pull your desired model (e.g., llama4:scout)
+
+bash
+Copy
+Edit
+ollama pull llama4:scout
+4. Run the Script
+bash
+Copy
+Edit
+python cincy_jungle.py
+Output is saved to digests/ as a time-stamped Markdown digest.
+
+Usage
+Change the model: Edit MODEL_NAME in the script (e.g., "llama4:scout", "llama3", "deepseek-r1:32b")
+
+Adjust number of articles: Change the entries[:5] slice.
+
+Add more sources: Add new RSS URLs and parsing logic as needed.
+
+Testing
+Unit and integration tests are provided using pytest:
+
+bash
+Copy
+Edit
+pytest
+Requirements
+Python 3.8+
+
+Ollama (for running local LLMs)
+
+feedparser
+
+psutil
+
+pynvml
+
+beautifulsoup4
+
+(Optional for testing): pytest
+
+Credits
+Cincy Jungle – News source
+
+Ollama – Local LLM serving
+
+Meta – Llama 3/4
+
+Mistral AI
+
+DeepSeek AI
+
+BeautifulSoup
+
+License
+MIT License
+
+Who Dey!
+
+yaml
+Copy
+Edit
+
+---
+
+**This is 100% copy-paste safe** for your `README.md` in GitHub.  
+Let me know if you want an even simpler version or a different project name
