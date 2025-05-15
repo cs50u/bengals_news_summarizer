@@ -2,8 +2,6 @@
 
 _Automated, LLM-powered curation and summarization of Cincinnati Bengals news._
 
-![Bengals Logo](https://cdn.vox-cdn.com/community_logos/48495/cincyjungle_fave.png)
-
 ---
 
 ## Overview
