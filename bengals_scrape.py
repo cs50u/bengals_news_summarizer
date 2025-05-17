@@ -6,6 +6,7 @@ import time
 import psutil
 from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlShutdown
 from bs4 import BeautifulSoup
+import re
 
 # Path to your local Ollama executable
 OLLAMA_PATH = r"C:\Users\ddavi\AppData\Local\Programs\Ollama\ollama.exe"
@@ -52,12 +53,53 @@ def get_article_text(entry):
     text = soup.get_text(separator=" ", strip=True)
     return text
 
+
+
 def is_bengals_story(entry):
     """
-    Heuristic filter for ESPN/NFL feeds: keep if 'bengals' appears in title/summary/content.
+    Filters stories for relevance to the Bengals.
+    Uses title, summary, and content to search for clear Bengals mentions.
     """
-    text = f"{getattr(entry, 'title', '')} {getattr(entry, 'summary', '')}".lower()
-    return "bengals" in text
+    title = getattr(entry, "title", "").lower()
+    summary = getattr(entry, "summary", "").lower()
+    content = get_article_text(entry).lower()
+
+    combined_text = f"{title} {summary} {content}"
+
+    # Look for clear references to Bengals
+    bengals_keywords = [
+        r"\bbengals\b",
+        r"\bcincinnati bengals\b",
+        r"\bteam cin\b",
+        r"\bvs\.? bengals\b",
+        r"\bbengals vs\b",
+        r"\bjoe burrow\b",      # optional star player filters
+        r"\bja'marr chase\b",
+        r"\btrey hendrickson\b",
+        r"\bal golden\b"
+    ]
+
+    # Exclude if it mentions other teams *without* mentioning Bengals
+    other_teams = [
+        "cardinals", "falcons", "ravens", "bills", "panthers", "bears", "browns", "cowboys",
+        "broncos", "lions", "packers", "texans", "colts", "jaguars", "chiefs", "raiders",
+        "chargers", "rams", "dolphins", "vikings", "patriots", "saints", "giants", "jets",
+        "eagles", "steelers", "49ers", "seahawks", "buccaneers", "titans", "commanders"
+    ]
+
+
+    # Must include Bengals reference
+    includes_bengals = any(re.search(pattern, combined_text) for pattern in bengals_keywords)
+
+    if not includes_bengals:
+        return False
+
+    # Check if article is *only* about another team (to avoid unrelated player news)
+    if any(team in combined_text and "bengals" not in combined_text for team in other_teams):
+        return False
+
+    return True
+
 
 def summarize_with_ollama(text, model=MODEL_NAME):
     """
@@ -65,12 +107,15 @@ def summarize_with_ollama(text, model=MODEL_NAME):
     Prompt is designed for trustworthy, newsletter-ready, fact-focused summaries.
     """
     prompt = (
-        "You are a Bengals news editor for a daily newsletter. Summarize the article below in a way that's accurate, concise, and engaging for fans. "
-        "Focus on the most relevant news, context, or developments—mention contract drama, injuries, or controversy ONLY if clearly present. "
-        "Never invent facts or rumors. Do not explain your reasoning, just write the summary. Make it sound natural and conversational in Miex.\n\n"
+        "You are a Bengals beat writer crafting a short summary for a daily fan newsletter. "
+        "Summarize the article below in a way that is accurate, concise, and conversational—"
+        "written in the voice and tone of Mike Florio from ProFootballTalk: punchy, direct, occasionally snarky, but always fact-based. "
+        "Highlight only the most relevant developments (e.g., injuries, contract drama, major plays, coaching changes). "
+        "Do NOT invent details or rumors, and do NOT include analysis or reasoning—just report the facts in a way that grabs attention.\n\n"
         "Article:\n\n"
         f"{text.strip()}"
     )
+
     try:
         cpu_before = get_cpu_usage()
         gpu_used_before, gpu_total, gpu_percent_before = get_gpu_usage()
