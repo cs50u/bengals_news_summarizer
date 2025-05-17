@@ -131,13 +131,3 @@ digests/bengals_digest_llama4_latest.md
 ## 🙋‍♂️ Author
 
 This project was built as a way to **automate and summarize Bengals news** for podcast preparation, fan engagement, and personal use—without reading through 100 articles a day.
-
----
-
-Let me know if you’d like to:
-
-- Turn this into a daily cron job or Windows Task Scheduler job
-- Publish to a newsletter or blog
-- Auto-post to Twitter/X or Discord
-
-I'm happy to help expand it!
