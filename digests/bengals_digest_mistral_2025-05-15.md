@@ -1,21 +1,46 @@
-# 🐅 Bengals News Digest – Florio Style (Ollama Edition)
+# 🐅 Bengals Digest — May 15, 2025
 
-### [The good, bad, and ugly from the Bengals’ official 2025 schedule](https://www.cincyjungle.com/2025/5/14/24430531/bengals-schedule-release-the-good-bad-ugly-cincinnati-2025-games)
 
-> 2025 schedule analysis: The Bengals kick off against Cleveland in Week 1 before hosting the Jaguars; three primetime road games, including Thanksgiving versus Baltimore. A difficult three-week stretch (Weeks 13-15) includes two matchups with the Ravens and a trip to Buffalo. Paycor Stadium gets one primetime home game, yet the team will play only once on Sunday Night Football. The schedule's uneven distribution of primetime games for Cincinnati is questionable.
+## TOP STORY
 
-### [Bengals to play at Ravens for Thanksgiving showdown](https://www.cincyjungle.com/2025/5/14/24430536/nfl-schedule-release-bengals-ravens-2025-thanksgiving-games)
+### [Former Bengals draft pick finds new team after schedule release](https://sports.yahoo.com/article/former-bengals-draft-pick-finds-200054577.html)
 
-> The Cincinnati Bengals will be playing the Baltimore Ravens for the fourth consecutive season on primetime, this time on Thanksgiving. Despite some frustration over playing in Baltimore so frequently, the NFL seems to view these games as prime-time or holiday events, providing the Bengals an opportunity to prove themselves with three potential road primetime wins this season against teams like Denver and Miami. The Bengals' schedule appears to be a challenge, testing their mettle after underperforming last year at 9-8, with only one home primetime game and one home 4:25 FOX game. Games against Arizona, Cleveland, and even Baltimore could potentially get flexed, presenting additional opportunities for the Bengals to cement their status in primetime.
 
-### [Breaking down the Bengals’ primetime games in 2025](https://www.cincyjungle.com/2025/5/14/24430523/bengals-primetime-games-2025-nfl-season-ravens-steelers-dolphins-broncos)
+> After being released by the Cincinnati Bengals, a former draft pick has found a new home in another AFC team following the 2023 NFL schedule release, potentially adding an intriguing twist to potential matchups between these two division rivals.
 
-> 2025 sees the Cincinnati Bengals playing four primetime games: Week 4 against Denver Broncos (MNF), Week 7 vs. Pittsburgh Steelers (TNF), Week 13 at Baltimore Ravens (Thanksgiving NF), and Week 16 at Miami Dolphins (SNF). The schedule makers seem to enjoy setting up Burrow-led offenses for high-stakes Monday Night Football rematches, with a potential playoff seeding battle against Denver in week 4. The Bengals will face divisional rivals on both TNF and SNF, with Thursday's game against Pittsburgh potentially testing their mettle on a short week. The Thanksgiving matchup against Baltimore could replicate the fireworks of last season, while the finale against Miami features two top-drafted QBs from 2020 in another prime time showdown. Flex scheduling leaves room for more primetime games as weeks 17 and 18 contests against Arizona Cardinals and Cleveland Browns remain undecided.
 
-### [Bengals to open 2025 season as a big favorite in Cleveland](https://www.cincyjungle.com/2025/5/14/24430516/bengals-vs-cleveland-browns-nfl-week-1-odds-spread-betting-fanduel)
+**Why it matters:** 14 rematch with Bills (headline number 10) is most impactful for Bengals fans today because it announces the upcoming matchup against the Buffalo Bills, a crucial division rival from last season, and sets expectations for an exciting game in the late stages of the 2025 regular season.
 
-> 2025 NFL schedule reveals the Bengals opening as 5.5-point favorites against the Browns in Cleveland, despite their historical slow starts under Zac Taylor. The Browns, with quarterback uncertainty and rebuilding efforts, are expected to put up a tough fight in the Battle of Ohio.
 
-### [2025 Bengals schedule released](https://www.cincyjungle.com/2025/5/14/24430512/2025-cincinnati-bengals-schedule-dates-times-locations)
+## QUICK HITS
 
-> 2025 Bengals Schedule Revealed: The Bengals will open their 2025 campaign on the road against the Browns before hosting the Jaguars in their home opener. Highlights include a Monday Night matchup with Minnesota and Thanksgiving showdown against Baltimore. Trey Hendrickson's return remains a hopeful journey for fans.
+- Cowboys' Co-Owner Makes Major Micah Parsons Claim Amid Contract Dispute [Read more](https://sports.yahoo.com/article/cowboys-co-owner-makes-major-193640216.html)
+- Bengals 2025 record predictions sees Cincinnati stay mediocre [Read more](https://www.sportingnews.com/ca/nfl/cincinnati-bengals/news/bengals-2025-record-predictions-sees-cincinnati-stay-mediocre/cda4b757afe2bd73c1455853)
+- Watch: Bloopers From Cincinnati Bengals 2025 Schedule Release Video [Read more](https://www.si.com/nfl/bengals/allbengals-insiders-plus/watch-bloopers-from-cincinnati-bengals-2025-schedule-release-video-01jva68abybr)
+- The 2025 NFL schedule is out: See all 32 team announcements on social media [Read more](https://sports.yahoo.com/article/2025-nfl-schedule-see-32-143415727.html)
+- 2025 NFL schedule of games release: Week 1, Christmas, Thanksgiving, Bengals, Colts, Titans, more [Read more](https://sports.yahoo.com/article/2025-nfl-schedule-games-release-142403332.html)
+- Cowboys predicted to pull off blockbuster trade with Bengals that makes Dallas a true contender [Read more](https://www.sportingnews.com/us/nfl/cincinnati-bengals/news/cowboys-predicted-blockbuster-trade-bengals-dallas-true-contender/585fc87a1ab6696ebfc6a0ef)
+
+## FAN PULSE
+
+_(Coming soon: Top fan reactions, memes, polls)_
+
+## BY THE NUMBERS
+
+_(Coming soon: Key stats, Vegas odds, standings)_
+
+## WHAT'S NEXT
+
+- Next game: _(update here)_
+
+- Upcoming events: _(update here)_
+
+## TRIVIA
+
+_Who was the last Bengal to score a TD in a playoff game? (Find out in tomorrow's digest!)_
+
+
+---
+
+
+*Bengals Digest is curated by fans and AI. Want to contribute or suggest improvements? Email us!*

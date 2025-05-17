@@ -9,12 +9,23 @@ from bs4 import BeautifulSoup
 
 # Path to your local Ollama executable
 OLLAMA_PATH = r"C:\Users\ddavi\AppData\Local\Programs\Ollama\ollama.exe"
-MODEL_NAME = "llama4:latest"  # Change to "deepseek-r1:32b", "mistral", etc.
+MODEL_NAME = "llama4:latest"  # Options: "llama4:latest", "deepseek-r1:32b", "mistral", etc.
+
+# List of Bengals-specific RSS feeds (add more as needed)
+BENGALS_FEEDS = [
+    "https://www.cincyjungle.com/rss/current",              # SB Nation - Cincy Jungle
+    "https://sports.yahoo.com/nfl/teams/cin/rss/",          # Yahoo! Sports Bengals
+    "https://bengalswire.usatoday.com/feed/",               # USA Today Bengals Wire
+    "https://www.espn.com/espn/rss/nfl/news",               # ESPN NFL News (will filter to Bengals stories)
+    "https://www.bengals.com/news/rss",                     # Bengals official site news
+]
 
 def get_cpu_usage():
+    """Return system-wide CPU usage as a percentage."""
     return psutil.cpu_percent(interval=0.1)
 
 def get_gpu_usage():
+    """Return NVIDIA GPU usage if available, otherwise (None, None, None)."""
     try:
         nvmlInit()
         handle = nvmlDeviceGetHandleByIndex(0)
@@ -24,28 +35,40 @@ def get_gpu_usage():
         percent = used_gb / total_gb * 100
         nvmlShutdown()
         return used_gb, total_gb, percent
-    except Exception as e:
+    except Exception:
         return None, None, None
 
 def get_article_text(entry):
-    # Prefer full HTML content if present, else fallback to summary
+    """
+    Extract and clean article text from a feedparser entry.
+    Prefer full HTML content if present, else fallback to summary.
+    """
     if hasattr(entry, "content") and len(entry.content) > 0:
-        # Handle both dict (real) and possible .value (legacy) cases
         html_container = entry.content[0]
         html = html_container['value'] if isinstance(html_container, dict) and 'value' in html_container else getattr(html_container, 'value', "")
     else:
         html = entry.summary if hasattr(entry, "summary") else ""
-    # Strip HTML tags for cleaner LLM prompt
     soup = BeautifulSoup(html, "html.parser")
     text = soup.get_text(separator=" ", strip=True)
     return text
 
+def is_bengals_story(entry):
+    """
+    Heuristic filter for ESPN/NFL feeds: keep if 'bengals' appears in title/summary/content.
+    """
+    text = f"{getattr(entry, 'title', '')} {getattr(entry, 'summary', '')}".lower()
+    return "bengals" in text
 
 def summarize_with_ollama(text, model=MODEL_NAME):
+    """
+    Summarize an article using Ollama + Llama 4.
+    Prompt is designed for trustworthy, newsletter-ready, fact-focused summaries.
+    """
     prompt = (
-        "You are a sharp, no-nonsense Bengals news analyst in the style of ProFootballTalk's Mike Florio. "
-        "Summarize the following article in exactly 2 sentences, highlighting the key details, contract drama, injuries, rumors, and controversial angles. "
-        "Inject a touch of dry wit. Do not include your thought process or reasoning—write only the summary. Do not invent facts. Article:\n\n"
+        "You are a Bengals news editor for a daily newsletter. Summarize the article below in a way that's accurate, concise, and engaging for fans. "
+        "Focus on the most relevant news, context, or developments—mention contract drama, injuries, or controversy ONLY if clearly present. "
+        "Never invent facts or rumors. Do not explain your reasoning, just write the summary. Make it sound natural and conversational in Miex.\n\n"
+        "Article:\n\n"
         f"{text.strip()}"
     )
     try:
@@ -56,19 +79,17 @@ def summarize_with_ollama(text, model=MODEL_NAME):
             [OLLAMA_PATH, "run", model],
             input=prompt.encode("utf-8"),
             capture_output=True,
-            timeout=180
+            timeout=200
         )
         elapsed = time.perf_counter() - start
         cpu_after = get_cpu_usage()
         gpu_used_after, _, gpu_percent_after = get_gpu_usage()
         summary = result.stdout.decode("utf-8").strip()
         # Clean up model output
-        if not summary:
+        if not summary or summary.isspace() or len(summary) < 10:
             summary = "[Summary missing or blank]"
         if "jeta" in summary:
             summary = summary.replace("jeta", "")
-        if summary.isspace() or len(summary) < 10:
-            summary = "[Summary missing or blank]"
         return (
             summary,
             elapsed,
@@ -78,14 +99,46 @@ def summarize_with_ollama(text, model=MODEL_NAME):
             gpu_percent_after
         )
     except subprocess.TimeoutExpired:
-        return "[Summary failed: timeout]", 180, None, None, None, None
+        return "[Summary failed: timeout]", 200, None, None, None, None
+
+def fetch_bengals_articles(feeds, limit_per_feed=6, max_total=15):
+    """
+    Fetches articles from multiple feeds and returns deduplicated, recent Bengals news entries.
+    For generic NFL feeds, keeps only Bengals-relevant articles.
+    """
+    all_entries = []
+    seen_titles = set()
+    for url in feeds:
+        feed = feedparser.parse(url)
+        count = 0
+        for entry in feed.entries:
+            # Only keep Bengals stories from generic NFL sources (like ESPN)
+            if "espn.com" in url or "nfl/news" in url:
+                if not is_bengals_story(entry):
+                    continue
+            # Only keep Bengals stories from Bengals.com, but their RSS is usually clean
+            if "bengals.com" in url:
+                # Could filter further, but their feed is Bengals-only
+                pass
+            # Deduplicate by title (case insensitive)
+            title_key = entry.title.strip().lower()
+            if title_key not in seen_titles:
+                all_entries.append(entry)
+                seen_titles.add(title_key)
+                count += 1
+            if count >= limit_per_feed:
+                break
+    # Sort by published date if available (reverse = newest first)
+    all_entries.sort(key=lambda e: getattr(e, "published", ""), reverse=True)
+    return all_entries[:max_total]
 
 def main():
-    feed = feedparser.parse("https://www.cincyjungle.com/rss/current")
-    entries = feed.entries[:5]
-    digest = ["# 🐅 Bengals News Digest – Florio Style (Ollama Edition)\n"]
+    print("Fetching Bengals articles from all sources...")
+    entries = fetch_bengals_articles(BENGALS_FEEDS, limit_per_feed=6, max_total=15)
+    today_str = datetime.now().strftime("%B %d, %Y")
+    digest = [f"# 🐅 Bengals Daily Digest — {today_str}\n"]
+    digest.append("Curated Bengals headlines & summaries from trusted sources. [Click any headline for the full article.]\n")
 
-    # For performance tracking
     article_times = []
     overall_start = time.perf_counter()
 
@@ -93,8 +146,8 @@ def main():
         title = entry.title
         link = entry.link
         article_text = get_article_text(entry)
-        # Truncate input text to 1,500 characters (usually plenty for news)
-        truncated_text = article_text[:1500]
+        # Llama 4 can handle long context, but we'll trim to ~2000 chars for best speed/quality
+        truncated_text = article_text[:2000]
         summary_input = f"{title}\n\n{truncated_text}"
 
         print(f"Summarizing article {idx}/{len(entries)}: {title}")
@@ -117,7 +170,7 @@ def main():
 
     total_time = time.perf_counter() - overall_start
 
-    # Ensure the digests folder exists
+    # Save output to digests/ folder, date- and model-stamped
     os.makedirs("digests", exist_ok=True)
     now = datetime.now().strftime("%Y-%m-%d")
     safe_model_name = MODEL_NAME.replace(":", "_").replace("-", "_")
@@ -132,7 +185,7 @@ def main():
     print(f"\n✅ Digest saved to {filename}")
     print(f"✅ Latest digest also saved to {latest_filename}")
 
-    # Print performance metrics
+    # Performance reporting
     print("\n--- Performance Metrics ---")
     cpu_list, gpu_list, times = [], [], []
     for idx, (title, elapsed, cpu_b, cpu_a, gpu_b, gpu_a) in enumerate(article_times, 1):

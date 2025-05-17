@@ -1,0 +1,5 @@
+feedparser
+beautifulsoup4
+psutil
+pynvml
+pytest
