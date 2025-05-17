@@ -38,7 +38,7 @@ digests/
 Each digest contains:
 
 - ✅ Headline as a clickable link
-- ✅ Short summary in Mike Florio style (punchy, factual, no fluff)
+- ✅ Short summary in PFT style (punchy, factual, no fluff)
 - ✅ Timestamped performance metrics per article
 
 ---
@@ -58,10 +58,10 @@ This ensures your summaries are **informative, no-nonsense, and tailored to Beng
 - **Python 3.8+**
 - **Local LLM via [Ollama](https://ollama.com/)** (e.g., `llama4`, `deepseek`, or `mistral`)
 - Python packages:
-    - `feedparser`
-    - `beautifulsoup4`
-    - `psutil`
-    - `nvidia-ml-py3`
+- `feedparser`
+- `beautifulsoup4`
+- `psutil`
+- `nvidia-ml-py3`
 
 You can install the dependencies with:
 
