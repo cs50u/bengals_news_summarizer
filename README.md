@@ -1,116 +1,143 @@
-# 🐅 Bengals News Summarizer
+# 🐅 Bengals Daily Digest Generator
 
-_Automated, LLM-powered curation and summarization of Cincinnati Bengals news._
-
-![Bengals Logo](https://cdn.vox-cdn.com/community_logos/48495/cincyjungle_fave.png)
-
----
-
-## Overview
-
-**Bengals News Summarizer** is a Python-based tool for automatically collecting, summarizing, and curating the latest Cincinnati Bengals news from [Cincy Jungle](https://www.cincyjungle.com) and other sources. It uses large language models (LLMs) running locally via [Ollama](https://ollama.com/) to generate concise, readable digests that are insightful, concise, and occasionally witty—written for Bengals fans who want the real story.
-
-The project is designed for **repeatable, robust, and customizable** content creation, suitable for newsletter authors, podcasters, or passionate fans.
+A Python-powered tool that automatically scrapes Cincinnati Bengals news from trusted sources, filters out unrelated NFL content, 
+and uses a local Ollama LLM (e.g., LLaMA 4) to summarize each article into a fan-friendly daily digest.
 
 ---
 
-## Features
+## 📌 Features
 
-- **Automated RSS fetching** from Cincy Jungle (easily extensible for more sources)
-- **HTML-to-text cleaning** for clean, model-friendly input
-- **Local LLM summarization** (supports Llama 3/4, Mistral, DeepSeek R1, etc. via Ollama)
-- **Style-tuned prompts** for direct, critical, and occasionally witty Bengals coverage
-- **Performance metrics:** Article-by-article timing, CPU, and GPU usage for benchmarking
-- **Bulletproof error handling:** Skips blank/garbled summaries, flags failures in output
-- **Markdown digest output:** Time-stamped and archived for each run, plus always-updated `latest` version
-- **Extensible:** Easily add more sources or adjust prompts/models
+- ✅ Pulls articles from multiple Bengals-related RSS feeds (Yahoo, USA Today, ESPN, Bengals.com, etc.)
+- ✅ Filters only Bengals-relevant stories, even from general NFL feeds like ESPN
+- ✅ Summarizes articles using your local Ollama installation (e.g., `llama4`, `mistral`, etc.)
+- ✅ Outputs a clean Markdown digest with headlines, links, and summaries
+- ✅ Tracks CPU and GPU usage per article during summarization
+- ✅ Saves both date-stamped and “latest” versions of the digest to disk
 
 ---
 
-## Example Output
+## 🚀 How It Works
 
-    # 🐅 Bengals News Digest – LLM Edition
-
-    ### [The good, bad, and ugly from the Bengals’ official 2025 schedule](...)
-    > The Bengals' 2025 schedule is out, and it's a mixed bag. On the plus side, they open at Cleveland and host Jacksonville; on the minus, it's another year of primetime disrespect and a brutal three-week gauntlet in November.
-
-    ...
+1. **Feeds**: The script parses a list of trusted RSS feeds for Bengals content.
+2. **Filtering**: It applies keyword filtering and team exclusion to discard unrelated NFL stories (e.g., Jets or Cowboys).
+3. **Summarizing**: Each article is summarized locally using an Ollama-compatible model like LLaMA 4, with a prompt tuned for Bengals fans.
+4. **Markdown Output**: A formatted digest is generated in Markdown and saved to the `digests/` folder.
 
 ---
 
-## Installation & Setup
+## 📂 Output
 
-### 1. Clone the Repo
+Your digest is saved to:
 
-    git clone https://github.com/cs50u/bengals_news_summarizer.git
-    cd bengals_news_summarizer
+```
+digests/
+├── bengals_digest_llama4_latest.md
+└── bengals_digest_llama4_YYYY-MM-DD.md
+```
 
-### 2. Set Up Your Python Environment
+Each digest contains:
 
-    python -m venv .venv
-    .venv\Scripts\activate   # Windows
-    # or
-    source .venv/bin/activate   # macOS/Linux
-    pip install -r requirements.txt
-
-### 3. Install and Set Up Ollama
-
-- [Download and install Ollama](https://ollama.com/download) (Windows/Mac/Linux)
-- Pull your desired model (for example, llama4:scout):
-
-        ollama pull llama4:scout
-
-### 4. Run the Script
-
-        python cincy_jungle.py
-
-- Output is saved to `digests/` as a time-stamped Markdown digest.
+- ✅ Headline as a clickable link
+- ✅ Short summary in Mike Florio style (punchy, factual, no fluff)
+- ✅ Timestamped performance metrics per article
 
 ---
 
-## Usage
+## 🧠 Prompt Style
 
-- **Change the model:** Edit `MODEL_NAME` in the script (e.g., `"llama4:scout"`, `"llama3"`, `"deepseek-r1:32b"`)
-- **Adjust number of articles:** Change the `entries[:5]` slice in the script.
-- **Add more sources:** Add new RSS URLs and parsing logic as needed.
+The summarization uses a carefully crafted prompt:
 
----
+> “You are a Bengals beat writer crafting a short summary for a daily fan newsletter… written in the voice and tone of Mike Florio from ProFootballTalk: punchy, direct, occasionally snarky, but always fact-based…”
 
-## Testing
-
-Unit and integration tests are provided using [pytest](https://docs.pytest.org/):
-
-    pytest
+This ensures your summaries are **informative, no-nonsense, and tailored to Bengals fans**.
 
 ---
 
-## Requirements
+## 🧰 Requirements
 
-- Python 3.8+
-- [Ollama](https://ollama.com/) (for running local LLMs)
-- [feedparser](https://pypi.org/project/feedparser/)
-- [psutil](https://pypi.org/project/psutil/)
-- [pynvml](https://pypi.org/project/pynvml/)
-- [beautifulsoup4](https://pypi.org/project/beautifulsoup4/)
-- (Optional for testing): [pytest](https://pypi.org/project/pytest/)
+- **Python 3.8+**
+- **Local LLM via [Ollama](https://ollama.com/)** (e.g., `llama4`, `deepseek`, or `mistral`)
+- Python packages:
+    - `feedparser`
+    - `beautifulsoup4`
+    - `psutil`
+    - `nvidia-ml-py3`
 
----
+You can install the dependencies with:
 
-## Credits
-
-- [Cincy Jungle](https://www.cincyjungle.com) – News source
-- [Ollama](https://ollama.com) – Local LLM serving
-- [Meta](https://ai.meta.com/llama/) – Llama 3/4
-- [Mistral AI](https://mistral.ai/)
-- [DeepSeek AI](https://deepseek.com/)
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
+```bash
+pip install feedparser beautifulsoup4 psutil nvidia-ml-py3
+```
 
 ---
 
-## License
+## ⚙️ Configuration
 
-MIT License
+### 🖥️ Model & Path
+
+Edit these variables at the top of the script to match your system:
+
+```python
+OLLAMA_PATH = r"C:\Users\yourname\AppData\Local\Programs\Ollama\ollama.exe"
+MODEL_NAME = "llama4:latest"
+```
+
+### 📰 RSS Feeds
+
+You can add or remove feeds from the `BENGALS_FEEDS` list. ESPN and other general feeds are filtered to include only Bengals content.
 
 ---
 
-_Who Dey!_
+## 🔍 Filtering Logic
+
+To avoid irrelevant stories:
+
+- Keeps only stories containing:
+    - “bengals”, “cincinnati bengals”
+    - Names like “joe burrow”, “ja'marr chase”, etc.
+- Excludes stories that **only** mention other NFL teams, like:
+    - `chiefs`, `eagles`, `jets`, etc. (full list of 31 non-Bengals teams)
+
+---
+
+## 📊 Performance Metrics
+
+After summarization, the script prints and logs:
+
+- CPU % before and after
+- GPU % (if NVIDIA)
+- Time per article
+- Total processing time
+- Output summary issues (timeouts, blank results, etc.)
+
+---
+
+## 🏁 Example Usage
+
+Just run the script:
+
+```bash
+python bengals_digest.py
+```
+
+Then open the latest digest:
+
+```bash
+digests/bengals_digest_llama4_latest.md
+```
+
+---
+
+## 🙋‍♂️ Author
+
+This project was built as a way to **automate and summarize Bengals news** for podcast preparation, fan engagement, and personal use—without reading through 100 articles a day.
+
+---
+
+Let me know if you’d like to:
+
+- Turn this into a daily cron job or Windows Task Scheduler job
+- Publish to a newsletter or blog
+- Auto-post to Twitter/X or Discord
+
+I'm happy to help expand it!
